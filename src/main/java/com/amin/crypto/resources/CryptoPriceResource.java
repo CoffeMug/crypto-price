@@ -8,13 +8,13 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 
 @Path("/crypto-price")
 @Produces(MediaType.APPLICATION_JSON)
 public class CryptoPriceResource {
 
-
-    public static final String cryptoTarget = "https://api.coindesk.com/v1/bpi/";
+    private static final String cryptoTarget = "https://api.coindesk.com/v1/bpi/currentprice/";
 
     private final Client cryptoClient;
 
@@ -24,9 +24,9 @@ public class CryptoPriceResource {
 
     @GET
     @Path("{currency}")
-    public String getPrice(@PathParam("currency") final String currencyID) {
+    public BigDecimal getPrice(@PathParam("currency") final String currencyID) {
 
-        WebTarget webTarget = cryptoClient.target("https://api.coindesk.com/v1/bpi/currentprice/" + currencyID + ".json");
+        WebTarget webTarget = cryptoClient.target(cryptoTarget + currencyID + ".json");
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.get();
 

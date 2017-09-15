@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -17,11 +19,11 @@ public class CryptoPriceResourceTest {
     @Test
     public void getPrice() throws Exception {
 
-        when(cryptoPriceResource.getPrice("blabla")).thenReturn("1.56");
+        when(cryptoPriceResource.getPrice("blabla")).thenReturn(new BigDecimal(1.56));
 
-        String price = cryptoPriceResource.getPrice("blabla");
+        BigDecimal price = cryptoPriceResource.getPrice("blabla");
 
-        assertEquals("1.56", price);
+        assertEquals(1.56, price.doubleValue(), 0.001);
 
     }
 

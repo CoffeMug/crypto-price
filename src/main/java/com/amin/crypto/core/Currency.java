@@ -3,6 +3,8 @@ package com.amin.crypto.core;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.jackson.JsonSnakeCase;
 
+import java.math.BigDecimal;
+
 @JsonSnakeCase
 public class Currency {
 
@@ -10,7 +12,7 @@ public class Currency {
     private final CURCODE curcode;
 
     @JsonProperty
-    private final String rate;
+    private final BigDecimal rate;
 
     @JsonProperty
     private final String description;
@@ -23,7 +25,7 @@ public class Currency {
                     @JsonProperty("description") final String description,
                     @JsonProperty("rate_float") final float rateFloat) {
         this.curcode = CURCODE.valueOf(code);
-        this.rate = rate;
+        this.rate = new BigDecimal(rate.replaceAll(",",""));
         this.description = description;
         this.rateFloat = rateFloat;
     }
@@ -33,7 +35,7 @@ public class Currency {
         return curcode;
     }
 
-    public String getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 

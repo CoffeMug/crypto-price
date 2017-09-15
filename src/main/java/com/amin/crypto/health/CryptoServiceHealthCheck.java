@@ -13,10 +13,11 @@ public class CryptoServiceHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        if (Double.valueOf(cryptoPriceResource.getPrice("blabla")).isNaN()) {
-            return Result.unhealthy("Crypto service is not healthy!");
-        } else {
+
+        if (cryptoPriceResource.getPrice("USD") != null) {
             return Result.healthy();
+        } else {
+            return Result.unhealthy("Crypto service is not healthy!");
         }
     }
 }
