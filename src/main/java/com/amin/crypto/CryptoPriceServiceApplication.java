@@ -1,8 +1,13 @@
 package com.amin.crypto;
 
+import com.amin.crypto.health.CryptoServiceHealthCheck;
+import com.amin.crypto.resources.CryptoPriceResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.client.JerseyClientBuilder;
+
+import javax.ws.rs.client.Client;
 
 public class CryptoPriceServiceApplication extends Application<CryptoPriceServiceConfiguration> {
 
@@ -23,7 +28,12 @@ public class CryptoPriceServiceApplication extends Application<CryptoPriceServic
     @Override
     public void run(final CryptoPriceServiceConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+        final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
+
+        final CryptoPriceResource cryptoPriceResource = new CryptoPriceResource(client);
+        final CryptoServiceHealthCheck cryptoServiceHealthCheck = new CryptoServiceHealthCheck(cryptoPriceResource);
+        environment.jersey().register(cryptoPriceResource);
+        environment.healthChecks().register("CryptoPriceHealthCheck", cryptoServiceHealthCheck);
     }
 
 }
